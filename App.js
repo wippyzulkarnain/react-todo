@@ -38,7 +38,12 @@ class App extends Component {
       todos : oldTodo
     })
   }
-  Search = async e =>{ 
+
+  handleKeypress = e =>{
+    if(e.key == 'Enter'){
+    this.addTodo(e)
+  }}
+  handleSearch = async e =>{ 
     await this.handleOnChange(e);
     let prevTodo = this.state.todos.slice();
     prevTodo = prevTodo.filter( todos =>
@@ -49,7 +54,7 @@ class App extends Component {
   }
   addTodo = () => {
     let newTodos = this.state.todos.concat({todo: this.state.input_todo , status : false});
-    
+    this.state.input_todo = ""
 
     this.setState({
       todos: newTodos
@@ -66,6 +71,7 @@ class App extends Component {
           name="input_todo"
           value={this.state.input_todo}
           onChange={this.handleOnChange}
+          onKeyPress={this.handleKeypress}
         />
         <button onClick={() => this.addTodo()}>Add</button>
         <br />
@@ -73,10 +79,11 @@ class App extends Component {
         <input
           type="text"
           name="input_search"
+          placeholder="Search"
           value={this.state.input_search}
-          onChange={this.handleOnChange}
+          onChange={this.handleSearch}
         />
-        <button onClick={() => this.Search()}>Search</button>
+      
         
         {this.state.input_search === "" &&
         this.state.todos.map((todos, index) => (
